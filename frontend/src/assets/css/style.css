@@ -1,0 +1,29 @@
+.pad {
+    background-color: #FFF;
+    padding: 2rem;
+    margin: 1rem;
+    box-shadow: -4px 8px 14px 6px rgba(0,0,0,0.2);
+}
+
+.pad h4 {
+    color: #777;
+    margin-bottom: 1.5rem;
+}
+
+.side-pad {
+    background-color: #FFF;
+    padding: 2rem;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+    margin: 1rem -1rem 1rem 1rem;
+}
+
+html {
+    height: 100%;
+}
+
+body {
+    height: 100%;
+    margin:0px;
+    padding:0px;
+    background: #f6f6f6;
+}

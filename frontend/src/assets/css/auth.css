@@ -1,0 +1,36 @@
+.auth-title {
+    width: 100%;
+    text-align: center;
+}
+
+.auth-title h3 {
+    color: #e94e02;
+    display: inline-block;
+}
+
+.auth-top {
+    text-align: center;
+    color: #555;
+    padding: 1rem;
+    border-bottom: 1px solid #DED9D9;
+}
+
+.auth-top a {
+    color: #e94e02;
+}
+
+.auth-top+.auth-body {
+    padding-top: 2rem;
+}
+
+.auth-body h6{
+    color: #6164C1;
+}
+
+.auth-body .custom-checkbox {
+    margin-bottom: 1rem;
+}
+
+.auth-body .errors {
+    color: red;
+}
