@@ -8,7 +8,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     token: localStorage.getItem('token') || null,
-    user: {},
+    user: null,
     collapse: localStorage.getItem('collapse-aside') === 'true'
   },
   mutations: {
@@ -21,7 +21,7 @@ export default new Vuex.Store({
     },
     removeToken (state) {
       state.token = null
-      state.user = {}
+      state.user = null
       localStorage.removeItem('token')
     },
     setActiveProject(state, project) {
@@ -86,7 +86,10 @@ export default new Vuex.Store({
       })
     },
     logout (context) {
-      context.commit('removeToken')
+      return new Promise((resolve, reject) => {
+        context.commit('removeToken')
+        resolve()
+      })
     },
     setActiveProject (context, projectName) {
       getProjectInfo({project_name: projectName}).then(res => {
