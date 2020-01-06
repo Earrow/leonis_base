@@ -6,8 +6,11 @@ import router from './router'
 import store from './store'
 
 import './assets/css/style.css'
+import global_ from './components/tool/Global'
 
 Vue.use(ElementUI)
+
+Vue.prototype.GLOBAL = global_
 
 new Vue({
   router,

@@ -5,15 +5,15 @@
                 <el-col :span="1">
                     <el-button class="btn-collapse" @click="collapse" icon="el-icon-menu"></el-button>
                 </el-col>
-                <el-col :span="3" class="col-logo">
+                <el-col :span="4" class="col-logo">
                     <div class="logo">
                         <a href="/">
-                            <span class="title">Leonis</span>
-                            <span class="sub-title">平台</span>
+                            <span class="title">{{ this.GLOBAL.title }}</span>
+                            <span class="sub-title">{{ this.GLOBAL.sub_title }}</span>
                         </a>
                     </div>
                 </el-col>
-                <el-col :span="17" class="project">
+                <el-col :span="16" class="project">
                     <el-select v-model="activeProjectName" placeholder="请选择项目" filterable @change="onActiveProjectChange">
                         <el-option-group
                         v-for="group in options"

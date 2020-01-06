@@ -3,7 +3,7 @@
     <div class="pad">
       <div class="auth-title"><h3>登录</h3></div>
       <div class="auth-top">
-        <p>欢迎使用 <strong><em>Leonis</em></strong> 接口测试平台！</p>
+        <p>欢迎使用 <strong><em>{{ this.GLOBAL.title }}</em></strong> {{ this.GLOBAL.sub_title }}！</p>
         <p><em>新用户？</em><router-link to="/register">注册»</router-link></p>
       </div>
       <div class="auth-body">
