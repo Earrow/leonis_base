@@ -1,12 +1,14 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+from celery import Celery
 
-from ..config import config
-
+from config import config
 
 db = SQLAlchemy()
 migrate = Migrate()
+celery = Celery(__name__)
+celery.config_from_object('celeryconfig')
 
 
 def create_app(config_name):
@@ -16,6 +18,13 @@ def create_app(config_name):
 
     db.init_app(app)
     migrate.init_app(app, db)
+
+    class ContextTask(celery.Task):
+        def __call__(self, *args, **kwargs):
+            with app.app_context():
+                return self.run(*args, **kwargs)
+
+    celery.Task = ContextTask
 
     from .api.auth import auth as auth_blueprint
     app.register_blueprint(auth_blueprint, url_prefix='/api/auth')

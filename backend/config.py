@@ -8,7 +8,7 @@ class Config:
 
     TOKEN_EXPIRE_TIME = 720  # token过期时间，单位：分钟
 
-    SQLALCHEMY_DATABASE_URI = f'mysql+pymysql://{os.environ.get("DB_USERNAME")}:{os.environ.get("DB_PASSWORD")}@{os.environ.get("DB_HOST")}:{os.environ.get("DB_PORT")}/leonis?charset=utf8mb4'
+    SQLALCHEMY_DATABASE_URI = ''
     SQLALCHEMY_COMMIT_ON_TEARDOWN = True
     SQLALCHEMY_TRACK_MODIFICATIONS = True
 
@@ -18,6 +18,8 @@ class Config:
 
 
 class DevelopmentConfig(Config):
+    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:123456@127.0.0.1:3306/leonis?charset=utf8mb4'
+
     @classmethod
     def init_app(cls, app):
         Config.init_app(app)
@@ -40,6 +42,8 @@ class DevelopmentConfig(Config):
 
 
 class ProductionConfig(Config):
+    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:123456@127.0.0.1:3306/leonis?charset=utf8mb4'
+
     @classmethod
     def init_app(cls, app):
         Config.init_app(app)

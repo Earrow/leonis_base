@@ -1,0 +1,1 @@
+celery -A leonis.celery worker -l info -P solo

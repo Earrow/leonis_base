@@ -100,7 +100,7 @@ export default new Vuex.Store({
           context.commit('setActiveProject', {
             id: res.data.project.id,
             name: res.data.project.name,
-            is_master: true
+            is_master: false
           })
         }
       })

@@ -5,12 +5,13 @@ from flask import request, request_started
 from flask.cli import AppGroup
 from werkzeug.exceptions import HTTPException
 
-from .app import create_app, db
-from .app.models import User, Administrator, Department, Project
-from .app.libs.error import APIError
-from .app.libs.error_code import ServerError
+from app import create_app, db, celery
+from app.celery_task.tasks import *
+from app.models import User, Administrator, Department, Project
+from app.libs.error import APIError
+from app.libs.error_code import ServerError
 
-app = create_app(os.getenv('FLASK_ENV') or 'default')
+flask_app = create_app(os.getenv('FLASK_ENV') or 'default')
 
 user_cli = AppGroup('user')
 
@@ -54,12 +55,12 @@ def del_admin(username):
         db.session.commit()
 
 
-app.cli.add_command(user_cli)
+flask_app.cli.add_command(user_cli)
 
 
-@app.shell_context_processor
+@flask_app.shell_context_processor
 def make_shell_context():
-    return dict(app=app, db=db, User=User, Administrator=Administrator, Department=Department, Project=Project)
+    return dict(app=flask_app, db=db, User=User, Administrator=Administrator, Department=Department, Project=Project)
 
 
 def log_request(sender, **extra):
@@ -67,10 +68,10 @@ def log_request(sender, **extra):
         f'{request.method} {request.url}, data: {request.data}, json: {request.json}, files: {request.files}')
 
 
-request_started.connect(log_request, app)
+request_started.connect(log_request, flask_app)
 
 
-@app.errorhandler(Exception)
+@flask_app.errorhandler(Exception)
 def handle_error(e):
     if isinstance(e, APIError):
         return e
@@ -80,12 +81,15 @@ def handle_error(e):
         error_code = 9000
         return APIError(msg=msg, code=code, error_code=error_code)
     else:
-        if not app.config['DEBUG']:
+        if not flask_app.config['DEBUG']:
             raise ServerError
         else:
             raise e
 
 
-@app.route('/test')
+@flask_app.route('/test')
 def test():
-    return '测试页面'
+    # return str(flask_app.config['SQLALCHEMY_DATABASE_URI'])
+    ret = get_users.delay()
+    return ret.get()
+    # return str(add_together.delay(1, 2).get(timeout=3))
