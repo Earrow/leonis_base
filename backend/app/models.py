@@ -104,7 +104,7 @@ class Administrator(db.Model):
     user = db.relationship('User', back_populates='administrator')
 
     @classmethod
-    def contain(cls, user: User):
+    def has(cls, user: User):
         """判断用户是否是平台管理员。
 
         :param user: 用户对象。
@@ -112,7 +112,7 @@ class Administrator(db.Model):
         """
         user_id = user.id
         admin = cls.query.filter_by(user_id=user_id).first()
-        return admin
+        return admin is not None
 
 
 class Department(db.Model):

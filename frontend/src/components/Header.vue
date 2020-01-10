@@ -84,7 +84,7 @@ export default {
             return ''
         },
         login_action() {
-            if (this.$store.user !== null) {
+            if (this.$store.user !== {}) {
                 return {'name1': 'logout', 'name2': '登出'}
             } else {
                 return {'name1': 'login', 'name2': '登录'}

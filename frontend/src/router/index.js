@@ -25,18 +25,48 @@ const routes = [
         meta: {
           requireAuth: true
         }
+      },
+      {
+        path: 'admin/dpt',
+        component: () => import(/* webpackChunkName: "admin" */ '@/views/admin/dpt.vue'),
+        meta: {
+          requireAuth: true,
+          requireAdmin: true
+        }
+      },
+      {
+        path: 'admin/pjt',
+        component: () => import(/* webpackChunkName: "admin" */ '@/views/admin/pjt.vue'),
+        meta: {
+          requireAuth: true,
+          requireAdmin: true
+        }
       }
     ]
   },
   {
     path: '/register',
     name: 'register',
-    component: () => import(/* webpackChunkName: "Register" */ '@/views/auth/Register.vue')
+    component: () => import(/* webpackChunkName: "auth" */ '@/views/auth/Register.vue')
   },
   {
     path: '/login',
     name: 'login',
-    component: () => import(/* webpackChunkName: "Login" */ '@/views/auth/Login.vue')
+    component: () => import(/* webpackChunkName: "auth" */ '@/views/auth/Login.vue')
+  },
+  {
+    name: '403',
+    path: '/403',
+    component: () => import('@/views/errors/403.vue')
+  },
+  {
+    name: '404',
+    path: '/404',
+    component: () => import('@/views/errors/404.vue')
+  },
+  {
+    path: '*',
+    redirect: '/404'
   }
 ]
 
@@ -52,8 +82,14 @@ router.beforeEach((to, from, next) => {
       store.commit('setToken', { 'token': localStorage.getItem('token') })
     }
     if (store.state.token) { // 通过vuex state获取当前的token是否存在
-      store.dispatch('getUserInfo').then(() => {
-        next()
+      store.dispatch('getUserInfo').then((user_info) => {
+        if (to.meta.requireAdmin && !(user_info.user.is_admin)) {
+            next({
+              path: '/403',
+            })
+        } else {
+          next()
+        }
       })
     } else {
       next({

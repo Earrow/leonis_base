@@ -5,7 +5,7 @@ from flask import current_app, request
 
 from . import auth
 from ... import db
-from ...models import User
+from ...models import User, Administrator
 from ...forms.user_form import UserForm
 from ...libs.error_code import OK, CredentialsError, TokenExpiredError, TokenInvalidError, UserNotExistError
 
@@ -62,7 +62,8 @@ def get_user_info():
                     'id': user.active_project.id,
                     'name': user.active_project.name,
                     'is_master': True if user in user.active_project.masters else False
-                } if user.active_project else None
+                } if user.active_project else None,
+                'is_admin': Administrator.has(user)
             })
         else:
             return UserNotExistError()
